@@ -13,7 +13,8 @@ def in_output(string, *args, **kwargs):
 
 def ensure_repo_exists(run, git_url, path):
     if os.path.exists(path):
-        if not in_output(git_url, ['git', 'remote', '-v'], cwd=path):
+        if not in_output(
+                git_url, ['git', 'config', 'remote.origin.url'], cwd=path):
             # The remote has changed
             shutil.rmtree(path)
             ensure_repo_exists(run, git_url, path)
