@@ -1,14 +1,23 @@
 #!/usr/bin/env python3
 from functools import partial
 import os
+import shutil
 import sys
 import json
 from subprocess import call, check_call, check_output, DEVNULL, STDOUT
 
 
+def in_output(string, *args, **kwargs):
+    return bytes(string, encoding='utf-8') in check_output(*args, **kwargs)
+
+
 def ensure_repo_exists(run, git_url, path):
-    # FIXME: cope if git_url differs to that on disk
-    if not os.path.exists(path):
+    if os.path.exists(path):
+        if not in_output(git_url, ['git', 'remote', '-v'], cwd=path):
+            # The remote has changed
+            shutil.rmtree(path)
+            ensure_repo_exists(run, git_url, path)
+    else:
         run(['git', 'clone', git_url, path], cwd=None)
 
 
@@ -20,8 +29,7 @@ def fetch_if_required(run, path, commit_sha):
 
 
 def branch_exists(path, branch):
-    return bytes(branch, encoding='utf-8') in check_output(
-        ['git', 'branch', '--list', branch], cwd=path)
+    return in_output(branch, ['git', 'branch', '--list', branch], cwd=path)
 
 
 def checkout_branch(run, path, branch):
