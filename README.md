@@ -1,1 +1,4 @@
-# concert_terraform_modules
+Terraform Modules
+=================
+
+A collection of custom terraform modules for managing Concert's deployment.
