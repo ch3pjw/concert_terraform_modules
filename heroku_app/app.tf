@@ -1,10 +1,19 @@
 variable "name" {}
 variable "subdomain" {}
 variable "source_git_url" {}
+variable "commit_sha" {}
+variable "cache_dir" {}
 variable "config_vars" {
   default = {}
 }
 
+
+module "app_git_repo" {
+  source = "git@github.com:ch3pjw/concert_terraform_modules.git//git_repo"
+  git_url = "${var.source_git_url}"
+  clone_path = "${var.cache_dir}/${var.source_git_url}"
+  commit_sha = "${var.commit_sha}"
+}
 
 resource "heroku_app" "app" {
   name = "${var.name}"
@@ -20,12 +29,11 @@ resource "heroku_app" "app" {
   # ]
   provisioner "local-exec" {
     command = <<EOF
-      cd /tmp;
-      rm -fr ${var.name}_deploy;
-      git clone ${var.source_git_url} ${var.name}_deploy;
-      cd ${var.name}_deploy;
-      git remote add heroku ${heroku_app.app.git_url};
-      git push heroku master;
+      cd ${module.app_git_repo.clone_path}
+      if ! git config remote.heroku.url > /dev/null; then
+        git remote add heroku ${heroku_app.app.git_url}
+      fi
+      git push heroku ${module.app_git_repo.target_branch}
     EOF
   }
 }
