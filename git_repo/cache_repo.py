@@ -40,7 +40,7 @@ if __name__ == '__main__':
 
     run = partial(check_call, cwd=path, stdout=DEVNULL, stderr=STDOUT)
 
-    ensure_repo_exists(run, target_branch, path)
+    ensure_repo_exists(run, git_url, path)
     fetch_if_required(run, path, commit_sha)
     checkout_branch(run, path, target_branch)
     run(['git', 'reset', '--hard', commit_sha])
