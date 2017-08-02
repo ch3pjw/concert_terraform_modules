@@ -41,7 +41,7 @@ resource "null_resource" "git_push" {
       if ! git config remote.heroku.url > /dev/null; then
         git remote add heroku ${heroku_app.app.git_url}
       fi
-      git push heroku ${module.app_git_repo.target_branch}
+      git push heroku ${module.app_git_repo.target_branch}:master
     EOF
   }
 }
