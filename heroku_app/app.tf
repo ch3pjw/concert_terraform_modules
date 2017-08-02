@@ -27,6 +27,14 @@ resource "heroku_app" "app" {
   # config_vars = [
   #   "${var.config_vars}"
   # ]
+}
+
+
+resource "null_resource" "git_push" {
+  triggers {
+    source_git_url = "${var.source_git_url}"
+    commit_sha = "${var.commit_sha}"
+  }
   provisioner "local-exec" {
     command = <<EOF
       cd ${module.app_git_repo.clone_path}
