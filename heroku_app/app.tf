@@ -9,7 +9,7 @@ variable "config_vars" {
 
 
 module "app_git_repo" {
-  source = "git@github.com:ch3pjw/concert_terraform_modules.git//git_repo"
+  source = "git@github.com:concert/terraform_modules.git//git_repo"
   git_url = "${var.source_git_url}"
   clone_path = "${var.cache_dir}/${var.source_git_url}"
   commit_sha = "${var.commit_sha}"
