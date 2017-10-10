@@ -46,6 +46,10 @@ resource "null_resource" "git_push" {
   }
 }
 
+output "name" {
+  value = "${heroku_app.app.name}"
+}
+
 output "git_url" {
   value = "${heroku_app.app.git_url}"
 }
