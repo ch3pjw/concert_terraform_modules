@@ -3,6 +3,9 @@ variable "subdomain" {}
 variable "source_git_url" {}
 variable "commit_sha" {}
 variable "cache_dir" {}
+variable "buildpacks" {
+  default = ["heroku/python"]
+}
 variable "config_vars" {
   default = {}
 }
@@ -18,9 +21,7 @@ module "app_git_repo" {
 resource "heroku_app" "app" {
   name = "${var.name}"
   region = "eu"
-  buildpacks = [
-    "heroku/python"
-  ]
+  buildpacks = "${var.buildpacks}"
   # Yes, it's rather odd that to pass the config_vars as a variable you have to
   # enclose the map in a list, when you can define it statically without the
   # enclosing list:
