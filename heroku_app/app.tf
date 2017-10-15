@@ -7,6 +7,7 @@ variable "buildpacks" {
   default = ["heroku/python"]
 }
 variable "config_vars" {
+  type = "map"
   default = {}
 }
 
@@ -22,12 +23,7 @@ resource "heroku_app" "app" {
   name = "${var.name}"
   region = "eu"
   buildpacks = "${var.buildpacks}"
-  # Yes, it's rather odd that to pass the config_vars as a variable you have to
-  # enclose the map in a list, when you can define it statically without the
-  # enclosing list:
-  # config_vars = [
-  #   "${var.config_vars}"
-  # ]
+  config_vars = ["${var.config_vars}"]
 }
 
 
