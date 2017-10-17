@@ -8,7 +8,10 @@ variable "buildpacks" {
 }
 variable "config_vars" {
   type = "map"
-  default = {}
+  description = "Due to a terraform bug, you can't leave this empty!"
+  default = {
+    NULL = ""
+  }
 }
 
 
