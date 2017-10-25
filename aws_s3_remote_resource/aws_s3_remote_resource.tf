@@ -31,7 +31,7 @@ resource "aws_s3_bucket_object" "object" {
 
 
 output "url" {
-  # Beacuse for some reason, aws_s3_bucket_object fails to tell you what its
+  # Because for some reason, aws_s3_bucket_object fails to tell you what its
   # resulting URL is:
   value = "https://s3.${var.region}.amazonaws.com/${var.bucket_id}/${aws_s3_bucket_object.object.id}"
 }
