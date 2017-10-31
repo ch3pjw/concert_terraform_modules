@@ -38,10 +38,10 @@ resource "null_resource" "git_push" {
   provisioner "local-exec" {
     command = <<EOF
       cd ${module.app_git_repo.clone_path}
-      if ! git config remote.heroku.url > /dev/null; then
-        git remote add heroku ${heroku_app.app.git_url}
+      if ! git config remote.${var.name}.url > /dev/null; then
+        git remote add ${var.name} ${heroku_app.app.git_url}
       fi
-      git push heroku ${module.app_git_repo.target_branch}:master
+      git push ${var.name} ${module.app_git_repo.target_branch}:master
     EOF
   }
 }
